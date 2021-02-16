@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { register } from "../actions/userActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-import { userRegisterReducer } from "../reducers/userReducers";
 
 export default function RegisterScreen(props) {
   const [name, setName] = useState("");
