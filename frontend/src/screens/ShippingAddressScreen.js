@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useDispatch, useSelector } from "react-redux";
-import { saveDispatchAddress } from "../actions/cartActions";
-import { userSigninReducer } from "../reducers/userReducers";
+import { saveShippingAddress } from "../actions/cartActions";
 
 ShippingAddressScreen.propTypes = {};
 
@@ -24,7 +23,7 @@ function ShippingAddressScreen(props) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(saveDispatchAddress({ fullName, address, city, postalCode, country }));
+    dispatch(saveShippingAddress({ fullName, address, city, postalCode, country }));
     props.history.push("/payment");
     // TODO: dispatch save shipping address action
   };
