@@ -17,7 +17,7 @@ function PaymentMethodScreen(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(savePaymentMethod(paymentMethod));
-    props.history.push("/placeholder");
+    props.history.push("/placeorder");
   };
   return (
     <div>

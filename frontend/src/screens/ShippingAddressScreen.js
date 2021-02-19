@@ -39,7 +39,7 @@ function ShippingAddressScreen(props) {
           <input type="text" id="fullName" placeholder="Enter Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)}></input>
         </div>
         <div>
-          <label htmlFor="fullName">Address</label>
+          <label htmlFor="address">Address</label>
           <input type="text" id="address" placeholder="Enter Address" value={address} onChange={(e) => setAddress(e.target.value)}></input>
         </div>
         <div>

@@ -12,7 +12,6 @@ export default function SigninScreen(props) {
 
   const redirect = props.location.search ? props.location.search.split("=")[1] : "/";
   const userSignin = useSelector((state) => state.userSignin);
-  console.log("userSignin", userSignin);
   const { userInfo, loading, error } = userSignin;
 
   const submitHandler = (e) => {
@@ -21,7 +20,6 @@ export default function SigninScreen(props) {
   };
   useEffect(() => {
     if (userInfo) {
-      console.log("redirect", redirect);
       props.history.push(redirect);
     }
   }, [props.history, redirect, userInfo]);
