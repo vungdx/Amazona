@@ -37,7 +37,9 @@ userRouter.post(
 userRouter.post(
   "/register",
   expressAsyncHandler(async (req, res) => {
+    console.log("Vung req.body", req.body);
     const user = new User({ name: req.body.name, email: req.body.email, password: bcrypt.hashSync(req.body.password, 8) });
+    console.log("user create", user);
     const createdUsers = await user.save();
     res.send({
       _id: createdUsers.id,
@@ -46,6 +48,18 @@ userRouter.post(
       isAdmin: createdUsers.isAdmin,
       token: generateToken(createdUsers),
     });
+  })
+);
+
+userRouter.get(
+  "/:id",
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      res.send(user);
+    } else {
+      res.status(404).send({ message: "User Not Found" });
+    }
   })
 );
 
