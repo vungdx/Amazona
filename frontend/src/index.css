@@ -194,10 +194,31 @@ img.large{
 }
 
 
-/* Form */
+/* Forms*/
 .form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height:100%;
   max-width: 60rem;
   margin: 0 auto;
+}
+
+.form-container{
+  display: flex;
+  flex-direction: column;
+  width: 32rem;
+  padding: 2rem;
+  border: 0.1rem #c0c0c0 solid;
+  border-radius: .5rem;
+  list-style-type: none;
+}
+
+.form-container li{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .form > div {
@@ -210,8 +231,29 @@ img.large{
   margin: 1rem 0;
 }
 
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 32rem;
+  padding: 2rem;
+  border: 0.1rem #c0c0c0 solid;
+  border-radius: 0.5rem;
+  list-style-type: none;
+}
+.form-container li {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
 
-/* Dropdown */
+input{
+  padding: 1rem;
+  border: .1rem #c0c0c0 solid;
+  border-radius: 0.5rem;
+}
+
+/* admin */
 .dropdown{
   display: inline-block;
   position: relative;
@@ -246,3 +288,29 @@ img.large{
   border-top-color: #f08000;
   color: #f08000;
 }
+
+
+/*  Products management */
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.content-margined {
+  margin: 1rem;
+}
+
+.table{
+  width: 100%;
+}
+
+th{
+  text-align: left;
+}
+
+tbody > tr:nth-child(odd){
+  background-color: #f0f0f0;
+}
+
+

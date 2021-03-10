@@ -10,10 +10,14 @@ HomeScreen.propTypes = {};
 function HomeScreen(props) {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
+  console.log("homeScreen", productList);
   const { loading, error, products } = productList;
+  
   useEffect(() => {
     dispatch(listProducts());
   }, [dispatch]);
+
+  console.log("HomeScreen", products);
   return (
     <div>
       {loading ? (
