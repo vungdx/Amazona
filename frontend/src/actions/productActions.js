@@ -24,13 +24,12 @@ export const detailsProduct = (productId) => async (dispatch) => {
 };
 
 export const saveProduct = (product) => async (dispatch, getState) => {
-  console.log("product", product);
   try {
     dispatch({ type: PRODUCT_SAVE_REQUEST, payload: product });
     const {
       userSignin: { userInfo },
     } = getState();
-    if (!product._id) {
+    if (product._id) {
       const { data } = await axios.post("/api/products", product, {
         headers: {
           Authorization: "Bearer" + userInfo.token,

@@ -22,6 +22,7 @@ function ProductManagementScreen(props) {
   const { loading, error, products } = productList;
 
   const productSave = useSelector((state) => state.productSave);
+  console.log("Thằng product được create", productSave);
   const { loading: loadingSave, success: successSave, error: errorSave } = productSave;
 
   useEffect(() => {
@@ -80,59 +81,58 @@ function ProductManagementScreen(props) {
     <div className="content content-margined">
       <div className="product-header">
         <h3>Product Management</h3>
-        <button className="button primary" onClick={() => openModal({})}>
+        <button className="button primary create-product" onClick={() => openModal({})}>
           Create Product
         </button>
       </div>
       <div className="product-management">
         {modalVisible ? (
-          <div className="form">
-            <form onSubmit={submitHandler}>
-              <ul className="form-container">
-                <li>
-                  <h2>Create Product</h2>
-                </li>
-                <li>
-                  <label htmlFor="name">Name</label>
-                  <input type="text" name="name" value={name} id="name" onChange={(e) => setName(e.target.value)}></input>
-                </li>
-                <li>
-                  <label htmlFor="price">Price</label>
-                  <input type="text" name="price" value={price} id="price" onChange={(e) => setPrice(e.target.value)}></input>
-                </li>
-                <li>
-                  <label htmlFor="image">Image</label>
-                  <input type="text" name="image" value={image} id="image" onChange={(e) => setImage(e.target.value)}></input>
-                  <input type="file" onChange={uploadFileHandler}></input>
-                  {uploading && <div>Uploading...</div>}
-                </li>
-                <li>
-                  <label htmlFor="brand">Brand</label>
-                  <input type="text" name="brand" value={brand} id="brand" onChange={(e) => setBrand(e.target.value)}></input>
-                </li>
-                <li>
-                  <label htmlFor="countInStock">CountInStock</label>
-                  <input type="text" name="countInStock" value={countInStock} id="countInStock" onChange={(e) => setCountInStock(e.target.value)}></input>
-                </li>
-                <li>
-                  <label htmlFor="name">Category</label>
-                  <input type="text" name="category" value={category} id="category" onChange={(e) => setCategory(e.target.value)}></input>
-                </li>
-                <li>
-                  <label htmlFor="description">Description</label>
-                  <textarea name="description" value={description} id="description" onChange={(e) => setDescription(e.target.value)}></textarea>
-                </li>
-                <li>
-                  <button type="submit" className="button primary">
-                    {id ? "Update" : "Create"}
-                  </button>
-                </li>
-                <li>
-                  <button type="button" onClick={() => setModalVisible(false)} className="button secondary">
-                    Back
-                  </button>
-                </li>
-              </ul>
+          <div>
+            <form className="form" onSubmit={submitHandler}>
+              <div>
+                <h1>Create product</h1>
+              </div>
+
+              <div>
+                <label htmlFor="name">Name</label>
+                <input type="text" name="name" id="name" required onChange={(e) => setName(e.target.value)}></input>
+              </div>
+              <div>
+                <label htmlFor="price">Price</label>
+                <input type="text" name="price" id="price" onChange={(e) => setPrice(e.target.value)}></input>
+              </div>
+              <div>
+                <label htmlFor="image">Image</label>
+                <input type="text" name="image" id="image" onChange={(e) => setImage(e.target.value)}></input>
+                <input type="file" onChange={uploadFileHandler}></input>
+                {uploading && <div>Uploading...</div>}
+              </div>
+              <div>
+                <label htmlFor="brand">Brand</label>
+                <input type="text" name="brand" id="brand" onChange={(e) => setBrand(e.target.value)}></input>
+              </div>
+              <div>
+                <label htmlFor="countInStock">CountInStock</label>
+                <input type="text" name="countInStock" id="countInStock" onChange={(e) => setCountInStock(e.target.value)}></input>
+              </div>
+              <div>
+                <label htmlFor="name">Category</label>
+                <input type="text" name="category" id="category" onChange={(e) => setCategory(e.target.value)}></input>
+              </div>
+              <div>
+                <label htmlFor="description">Description</label>
+                <textarea name="description" id="description" onChange={(e) => setDescription(e.target.value)}></textarea>
+              </div>
+              <div>
+                <button type="submit" className="button primary">
+                  {id ? "Update" : "Create"}
+                </button>
+              </div>
+              <div>
+                <button type="button" onClick={() => setModalVisible(false)} className="button secondary">
+                  Back
+                </button>
+              </div>
             </form>
           </div>
         ) : (
