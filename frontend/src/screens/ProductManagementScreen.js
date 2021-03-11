@@ -1,11 +1,13 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import { listProducts, saveProduct } from "../actions/productActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-import { saveProduct, listProducts, deleteProdcut } from "../actions/productActions";
+import { productSaveReducer } from "../reducers/productReducers";
 
 function ProductManagementScreen(props) {
+  const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [id, setId] = useState("");
   const [name, setName] = useState("");
@@ -16,15 +18,11 @@ function ProductManagementScreen(props) {
   const [countInStock, setCountInStock] = useState("");
   const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
-  const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
 
-  // const productSave = useSelector((state) => state.productSave);
-  // const { loading: loadingSave, success: successSave, error: errorSave } = productSave;
-
-  // const productDelete = useSelector((state) => state.productDelete);
-  // const { loading: loadingDelete, success: successDelete, error: errorDelete } = productDelete;
+  const productSave = useSelector((state) => state.productSave);
+  const { loading: loadingSave, success: successSave, error: errorSave } = productSave;
 
   useEffect(() => {
     dispatch(listProducts());
@@ -40,44 +38,44 @@ function ProductManagementScreen(props) {
     setCategory(product.category);
     setCountInStock(product.countInStock);
   };
-  // const submitHandler = (e) => {
-  //   e.preventDefault();
-  //   dispatch(
-  //     saveProduct({
-  //       _id: id,
-  //       name,
-  //       price,
-  //       image,
-  //       brand,
-  //       category,
-  //       countInStock,
-  //       description,
-  //     })
-  //   );
-  // };
-  // const deleteHandler = (product) => {
-  //   dispatch(deleteProduct(product._id));
-  // };
-  // const uploadFileHandler = (e) => {
-  //   const file = e.target.files[0];
-  //   const bodyFormData = new FormData();
-  //   bodyFormData.append("image", file);
-  //   setUploading(true);
-  //   axios
-  //     .post("/api/uploads", bodyFormData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     })
-  //     .then((response) => {
-  //       setImage(response.data);
-  //       setUploading(false);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       setUploading(false);
-  //     });
-  // };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(
+      saveProduct({
+        _id: id,
+        name,
+        price,
+        image,
+        brand,
+        category,
+        countInStock,
+        description,
+      })
+    );
+  };
+
+  const uploadFileHandler = (e) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append("image", file);
+    setUploading(true);
+    axios
+      .post("/api/uploads", bodyFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        setImage(response.data);
+        setUploading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setUploading(false);
+      });
+  };
+
   return (
     <div className="content content-margined">
       <div className="product-header">
@@ -89,7 +87,7 @@ function ProductManagementScreen(props) {
       <div className="product-management">
         {modalVisible ? (
           <div className="form">
-            <form>
+            <form onSubmit={submitHandler}>
               <ul className="form-container">
                 <li>
                   <h2>Create Product</h2>
@@ -105,7 +103,7 @@ function ProductManagementScreen(props) {
                 <li>
                   <label htmlFor="image">Image</label>
                   <input type="text" name="image" value={image} id="image" onChange={(e) => setImage(e.target.value)}></input>
-                  <input type="file"></input>
+                  <input type="file" onChange={uploadFileHandler}></input>
                   {uploading && <div>Uploading...</div>}
                 </li>
                 <li>
