@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { listProducts, saveProduct } from "../actions/productActions";
+import { deleteProduct, listProducts, saveProduct } from "../actions/productActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { productSaveReducer } from "../reducers/productReducers";
@@ -22,12 +22,20 @@ function ProductManagementScreen(props) {
   const { loading, error, products } = productList;
 
   const productSave = useSelector((state) => state.productSave);
-  console.log("Thằng product được create", productSave);
   const { loading: loadingSave, success: successSave, error: errorSave } = productSave;
 
+  const productDelete = useSelector((state) => state.productDelete);
+  console.log("productDelete", productDelete);
+  const { loading: loadingDelete, error: errorDelete, success: successDelete } = productDelete;
+
   useEffect(() => {
+    // do your side effect here...
     dispatch(listProducts());
-  }, [dispatch]);
+    return () => {
+      //Clean up here...
+      // Executed before the next render or unmount
+    };
+  }, [successDelete]);
   const openModal = (product) => {
     setModalVisible(true);
     setId(product._id);
@@ -77,6 +85,12 @@ function ProductManagementScreen(props) {
       });
   };
 
+  const deleteHandler = (product) => {
+    if (window.confirm("Are you sure to delete?")) {
+      dispatch(deleteProduct(product._id));
+    }
+  };
+
   return (
     <div className="content content-margined">
       <div className="product-header">
@@ -92,6 +106,11 @@ function ProductManagementScreen(props) {
               <div>
                 <h1>Create product</h1>
               </div>
+              {loadingDelete && <LoadingBox></LoadingBox>}
+              {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
+
+              {loadingSave && <LoadingBox></LoadingBox>}
+              {errorSave && <MessageBox variant="danger">{errorSave}</MessageBox>}
 
               <div>
                 <label htmlFor="name">Name</label>
@@ -140,7 +159,7 @@ function ProductManagementScreen(props) {
             {loading ? (
               <LoadingBox></LoadingBox>
             ) : error ? (
-              <MessageBox varient="danger"></MessageBox>
+              <MessageBox variant="danger"></MessageBox>
             ) : (
               <table className="table">
                 <thead>
@@ -163,7 +182,9 @@ function ProductManagementScreen(props) {
                       <td>{product.brand}</td>
                       <td>
                         <button className="button">Edit</button>
-                        <button className="button">Delete</button>
+                        <button className="button" onClick={() => deleteHandler(product)}>
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))}
