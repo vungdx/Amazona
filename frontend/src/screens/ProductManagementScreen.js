@@ -25,17 +25,19 @@ function ProductManagementScreen(props) {
   const { loading: loadingSave, success: successSave, error: errorSave } = productSave;
 
   const productDelete = useSelector((state) => state.productDelete);
-  console.log("productDelete", productDelete);
   const { loading: loadingDelete, error: errorDelete, success: successDelete } = productDelete;
 
   useEffect(() => {
     // do your side effect here...
+    if (successSave) {
+      setModalVisible(false);
+    }
     dispatch(listProducts());
     return () => {
       //Clean up here...
       // Executed before the next render or unmount
     };
-  }, [successDelete]);
+  }, [successDelete, successSave]);
   const openModal = (product) => {
     setModalVisible(true);
     setId(product._id);
@@ -114,33 +116,33 @@ function ProductManagementScreen(props) {
 
               <div>
                 <label htmlFor="name">Name</label>
-                <input type="text" name="name" id="name" required onChange={(e) => setName(e.target.value)}></input>
+                <input type="text" name="name" value={name} id="name" required onChange={(e) => setName(e.target.value)}></input>
               </div>
               <div>
                 <label htmlFor="price">Price</label>
-                <input type="text" name="price" id="price" onChange={(e) => setPrice(e.target.value)}></input>
+                <input type="text" name="price" value={price} id="price" onChange={(e) => setPrice(e.target.value)}></input>
               </div>
               <div>
                 <label htmlFor="image">Image</label>
-                <input type="text" name="image" id="image" onChange={(e) => setImage(e.target.value)}></input>
+                <input type="text" name="image" id="image" value={image} onChange={(e) => setImage(e.target.value)}></input>
                 <input type="file" onChange={uploadFileHandler}></input>
                 {uploading && <div>Uploading...</div>}
               </div>
               <div>
                 <label htmlFor="brand">Brand</label>
-                <input type="text" name="brand" id="brand" onChange={(e) => setBrand(e.target.value)}></input>
+                <input type="text" name="brand" id="brand" value={brand} onChange={(e) => setBrand(e.target.value)}></input>
               </div>
               <div>
                 <label htmlFor="countInStock">CountInStock</label>
-                <input type="text" name="countInStock" id="countInStock" onChange={(e) => setCountInStock(e.target.value)}></input>
+                <input type="text" name="countInStock" id="countInStock" value={countInStock} onChange={(e) => setCountInStock(e.target.value)}></input>
               </div>
               <div>
                 <label htmlFor="name">Category</label>
-                <input type="text" name="category" id="category" onChange={(e) => setCategory(e.target.value)}></input>
+                <input type="text" name="category" id="category" value={category} onChange={(e) => setCategory(e.target.value)}></input>
               </div>
               <div>
                 <label htmlFor="description">Description</label>
-                <textarea name="description" id="description" onChange={(e) => setDescription(e.target.value)}></textarea>
+                <textarea name="description" id="description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
               </div>
               <div>
                 <button type="submit" className="button primary">
@@ -181,7 +183,9 @@ function ProductManagementScreen(props) {
                       <td>{product.category}</td>
                       <td>{product.brand}</td>
                       <td>
-                        <button className="button">Edit</button>
+                        <button className="button" onClick={() => openModal(product)}>
+                          Edit
+                        </button>
                         <button className="button" onClick={() => deleteHandler(product)}>
                           Delete
                         </button>
