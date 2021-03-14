@@ -370,6 +370,7 @@ img.large {
 }
 .pagination a.active {
   font-weight: bold;
+  background-color: orange;
 }
 
 

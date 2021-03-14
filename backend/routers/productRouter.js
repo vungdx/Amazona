@@ -5,11 +5,24 @@ import Product from "../models/productModel.js";
 import { isAdmin, isAuth } from "../utils.js";
 
 const productRouter = express.Router();
+
 productRouter.get(
-  "/",
+  "/all",
   expressAsyncHandler(async (req, res) => {
     const products = await Product.find({});
     res.send(products);
+  })
+);
+productRouter.get(
+  "/",
+  expressAsyncHandler(async (req, res) => {
+    const pageSize = 10;
+    const page = Number(req.query.pageNumber) || 1;
+    const count = await Product.countDocuments({});
+    const products = await Product.find({})
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+    res.send({ products, page, pages: Math.ceil(count / pageSize) });
   })
 );
 productRouter.get(
@@ -20,6 +33,7 @@ productRouter.get(
     res.send({ createdProducts });
   })
 );
+// Xem chi tiết sản phẩm
 productRouter.get(
   "/:id",
   expressAsyncHandler(async (req, res) => {

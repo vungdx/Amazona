@@ -1,12 +1,14 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 import { deleteProduct, listProducts, saveProduct } from "../actions/productActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-import { productSaveReducer } from "../reducers/productReducers";
+import { PRODUCT_DELETE_RESET, PRODUCT_SAVE_RESET } from "../constants/productConstants";
 
 function ProductManagementScreen(props) {
+  const { pageNumber = 1 } = useParams();
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [id, setId] = useState("");
@@ -19,8 +21,7 @@ function ProductManagementScreen(props) {
   const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
   const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
-
+  const { loading, error, products, page, pages } = productList;
   const productSave = useSelector((state) => state.productSave);
   const { loading: loadingSave, success: successSave, error: errorSave } = productSave;
 
@@ -31,13 +32,13 @@ function ProductManagementScreen(props) {
     // do your side effect here...
     if (successSave) {
       setModalVisible(false);
+      dispatch({ type: PRODUCT_SAVE_RESET });
     }
-    dispatch(listProducts());
-    return () => {
-      //Clean up here...
-      // Executed before the next render or unmount
-    };
-  }, [successDelete, successSave]);
+    if (successDelete) {
+      dispatch({ type: PRODUCT_DELETE_RESET });
+    }
+    dispatch(listProducts({ pageNumber }));
+  }, [successDelete, dispatch, successSave, pageNumber]);
   const openModal = (product) => {
     setModalVisible(true);
     setId(product._id);
@@ -108,12 +109,6 @@ function ProductManagementScreen(props) {
               <div>
                 <h1>Create product</h1>
               </div>
-              {loadingDelete && <LoadingBox></LoadingBox>}
-              {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
-
-              {loadingSave && <LoadingBox></LoadingBox>}
-              {errorSave && <MessageBox variant="danger">{errorSave}</MessageBox>}
-
               <div>
                 <label htmlFor="name">Name</label>
                 <input type="text" name="name" value={name} id="name" required onChange={(e) => setName(e.target.value)}></input>
@@ -158,42 +153,57 @@ function ProductManagementScreen(props) {
           </div>
         ) : (
           <>
+            {loadingDelete && <LoadingBox></LoadingBox>}
+            {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
+
+            {loadingSave && <LoadingBox></LoadingBox>}
+            {errorSave && <MessageBox variant="danger">{errorSave}</MessageBox>}
             {loading ? (
               <LoadingBox></LoadingBox>
             ) : error ? (
               <MessageBox variant="danger"></MessageBox>
             ) : (
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Category</th>
-                    <th>Brand</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((product) => (
-                    <tr key={product._id}>
-                      <td>{product._id}</td>
-                      <td>{product.name}</td>
-                      <td>{product.price}</td>
-                      <td>{product.category}</td>
-                      <td>{product.brand}</td>
-                      <td>
-                        <button className="button" onClick={() => openModal(product)}>
-                          Edit
-                        </button>
-                        <button className="button" onClick={() => deleteHandler(product)}>
-                          Delete
-                        </button>
-                      </td>
+              <>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>Category</th>
+                      <th>Brand</th>
+                      <th>Action</th>
                     </tr>
+                  </thead>
+                  <tbody>
+                    {products.map((product) => (
+                      <tr key={product._id}>
+                        <td>{product._id}</td>
+                        <td>{product.name}</td>
+                        <td>{product.price}</td>
+                        <td>{product.category}</td>
+                        <td>{product.brand}</td>
+                        <td>
+                          <button className="button" onClick={() => openModal(product)}>
+                            Edit
+                          </button>
+                          <button className="button" onClick={() => deleteHandler(product)}>
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {/* Pagination */}
+                <div className="row center pagination">
+                  {[...Array(pages).keys()].map((x) => (
+                    <Link className={x + 1 === page ? "active" : ""} key={x + 1} to={`/product-management/pageNumber/${x + 1}`}>
+                      {x + 1}
+                    </Link>
                   ))}
-                </tbody>
-              </table>
+                </div>
+              </>
             )}
           </>
         )}

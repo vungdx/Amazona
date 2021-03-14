@@ -3,21 +3,19 @@ import Product from "./../components/Product";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts } from "../actions/productActions";
+import { listAllProducts } from "../actions/productActions";
 
 HomeScreen.propTypes = {};
 
 function HomeScreen(props) {
   const dispatch = useDispatch();
-  const productList = useSelector((state) => state.productList);
-  console.log("homeScreen", productList);
-  const { loading, error, products } = productList;
-  
+  const productListAll = useSelector((state) => state.productListAll);
+  const { loading, error, products } = productListAll;
+
   useEffect(() => {
-    dispatch(listProducts());
+    dispatch(listAllProducts());
   }, [dispatch]);
 
-  console.log("HomeScreen", products);
   return (
     <div>
       {loading ? (
