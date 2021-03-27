@@ -52,22 +52,18 @@ productRouter.post(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = new Product({
-      name: req.body.name,
-      price: req.body.price,
-      image: req.body.image,
-      brand: req.body.brand,
-      category: req.body.category,
-      countInStock: req.body.countInStock,
-      description: req.body.description,
-      rating: req.body.rating,
-      numReviews: req.body.numReviews,
+      name: "same name" + Date.now(),
+      image: "/images/p1.jpg",
+      price: 0,
+      brand: "same brand",
+      category: "same category",
+      countInStock: 0,
+      rating: 0,
+      numReviews: 0,
+      description: "same description",
     });
-    const newProduct = await product.save();
-    if (newProduct) {
-      return res.status(201).send({ message: "New Product Created", data: newProduct });
-    } else {
-      return res.status(500).send({ message: "Error in Creating Product." });
-    }
+    const createdProduct = await product.save();
+    res.send({ message: "Product Created", product: createdProduct });
   })
 );
 

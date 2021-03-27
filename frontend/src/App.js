@@ -8,7 +8,7 @@ import HomeScreen from "./screens/HomeScreen";
 import OrderScreen from "./screens/OrderScreen";
 import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
-import ProductManagementScreen from "./screens/ProductManagementScreen";
+import ProductListScreen from "./screens/ProductListScreen";
 import ProductScreen from "./screens/ProductScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import RegisterScreen from "./screens/RegisterScreen";
@@ -83,14 +83,13 @@ function App() {
           <Route path="/cart/:id?" component={CartScreen}></Route>
           <Route path="/register" component={RegisterScreen}></Route>
           <Route path="/signin" component={SigninScreen}></Route>
-          <AdminRoute path="/product-management/pageNumber/:pageNumber" component={ProductManagementScreen} />
-          <Route path="/product/:id" component={ProductScreen}></Route>
+          <Route path="/product/:id" component={ProductScreen} exact></Route>
           <Route path="/shipping" component={ShippingAddressScreen}></Route>
           <Route path="/payment" component={PaymentMethodScreen}></Route>
           <Route path="/placeorder" component={PlaceOrderScreen}></Route>
           <Route path="/order/:id" component={OrderScreen}></Route>
           <PrivateRoute path="/profile" component={ProfileScreen}></PrivateRoute>
-
+          <AdminRoute path="/productlist" component={ProductListScreen}></AdminRoute>
           <Route path="/" exact component={HomeScreen}></Route>
         </main>
         <footer className="row center">All right reserved</footer>

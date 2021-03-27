@@ -18,7 +18,6 @@ function ProductScreen(props) {
     dispatch(detailsProduct(productId));
   }, [dispatch, productId]);
   const addToCartHandler = () => {
-    // change the road
     props.history.push(`/cart/${productId}?qty=${qty}`);
   };
   return (
