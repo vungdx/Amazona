@@ -18,6 +18,9 @@ import {
   PRODUCT_SAVE_FAIL,
   PRODUCT_SAVE_REQUEST,
   PRODUCT_SAVE_SUCCESS,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_SUCCESS,
 } from "../constants/productConstants";
 
 // Không phân trang tại trang chủ => nên update bằng loadmore
@@ -119,5 +122,24 @@ export const createProduct = () => async (dispatch, getState) => {
   } catch (error) {
     const message = error.response && error.response.data.message ? error.response.data.message : error.message;
     dispatch({ type: PRODUCT_CREATE_FAIL, payload: message });
+  }
+};
+
+export const updateProduct = (product) => async (dispatch, getState) => {
+  dispatch({
+    type: PRODUCT_UPDATE_REQUEST,
+    payload: product,
+  });
+  const {
+    userSignin: { userInfo },
+  } = getState();
+  try {
+    const { data } = await axios.put(`/api/products/${product._id}`, product, {
+      headers: { Authorization: `Bearer ${userInfo.token}` },
+    });
+    dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
+  } catch (error) {
+    const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+    dispatch({ type: PRODUCT_UPDATE_FAIL, error: message });
   }
 };
