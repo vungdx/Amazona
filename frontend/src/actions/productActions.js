@@ -105,9 +105,13 @@ export const createProduct = () => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await axios.post("/api/products", {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await axios.post(
+      "/api/products",
+      {},
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
       payload: data.product,

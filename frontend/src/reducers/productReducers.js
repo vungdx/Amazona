@@ -1,4 +1,3 @@
-import { scryRenderedDOMComponentsWithTag } from "react-dom/test-utils";
 import {
   PRODUCT_DELETE_FAIL,
   PRODUCT_DELETE_REQUEST,

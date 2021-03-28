@@ -19,8 +19,8 @@ function ProductListScreen(props) {
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET });
       props.history.push(`/product/${createdProduct._id}/edit`);
-      dispatch(listProducts());
     }
+    dispatch(listProducts());
   }, [createdProduct, dispatch, props.history, successCreate]);
 
   const deleteHandler = () => {
