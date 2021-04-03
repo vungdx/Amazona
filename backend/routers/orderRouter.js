@@ -1,8 +1,16 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
-import { isAuth } from "../utils.js";
+import { isAdmin, isAuth } from "../utils.js";
 const orderRouter = express.Router();
+orderRouter.get(
+  "/",
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const orders = await Order.find({}).populate("user", "name");
+    res.send(orders);
+  })
+);
 orderRouter.post(
   "/",
   isAuth,
@@ -38,4 +46,5 @@ orderRouter.get(
     }
   })
 );
+
 export default orderRouter;

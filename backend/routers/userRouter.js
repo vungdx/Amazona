@@ -3,7 +3,7 @@ import User from "../models/userModel.js";
 import data from "../data.js";
 import expressAsyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
-import { generateToken, isAuth } from "../utils.js";
+import { generateToken, isAuth, isAdmin } from "../utils.js";
 const userRouter = express.Router();
 userRouter.get(
   "/seed",
@@ -13,13 +13,20 @@ userRouter.get(
     res.send({ createdUsers });
   })
 );
+userRouter.get(
+  "/",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const users = await User.find({});
+    res.send(users);
+  })
+);
 
 userRouter.post(
   "/signin",
   expressAsyncHandler(async (req, res) => {
-    console.log("req.body.email", req.body.email);
     const user = await User.findOne({ email: req.body.email });
-    console.log("user", user);
 
     if (user) {
       if (bcrypt.compareSync(req.body.password, user.password)) {
@@ -85,6 +92,16 @@ userRouter.put(
         token: generateToken(updatedUser),
       });
     }
+  })
+);
+
+userRouter.get(
+  "/",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const users = await User.find({});
+    res.send(users);
   })
 );
 
