@@ -9,8 +9,8 @@ HomeScreen.propTypes = {};
 
 function HomeScreen(props) {
   const dispatch = useDispatch();
-  const productListAll = useSelector((state) => state.productListAll);
-  const { loading, error, products } = productListAll;
+  const productList = useSelector((state) => state.productList);
+  const { loading, error, products } = productList;
 
   useEffect(() => {
     dispatch(listProducts({}));
