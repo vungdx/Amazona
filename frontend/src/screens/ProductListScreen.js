@@ -10,18 +10,21 @@ import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
 ProductListScreen.propTypes = {};
 
 function ProductListScreen(props) {
+  const sellerMode = props.match.path.indexOf("/seller") >= 0;
   const productList = useSelector((state) => state.productList);
   const dispatch = useDispatch();
   const { loading, error, products } = productList;
   const productCreate = useSelector((state) => state.productCreate);
   const { loading: loadingCreate, error: errorCreate, success: successCreate, product: createdProduct } = productCreate;
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
   useEffect(() => {
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET });
       props.history.push(`/product/${createdProduct._id}/edit`);
     }
-    dispatch(listProducts());
-  }, [createdProduct, dispatch, props.history, successCreate]);
+    dispatch(listProducts({ seller: sellerMode ? userInfo._id : "" }));
+  }, [createdProduct, dispatch, props.history, successCreate, sellerMode, userInfo._id]);
 
   const deleteHandler = () => {
     //   DELETE

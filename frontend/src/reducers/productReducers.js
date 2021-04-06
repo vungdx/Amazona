@@ -26,25 +26,6 @@ import {
   PRODUCT_UPDATE_RESET,
 } from "../constants/productConstants";
 
-export const productListAllReducer = (state = { loading: true, products: [] }, action) => {
-  switch (action.type) {
-    case PRODUCT_LIST_ALL_REQUEST:
-      return { loading: true };
-    case PRODUCT_LIST_ALL_SUCCESS:
-      return {
-        loading: false,
-        products: action.payload,
-      };
-    case PRODUCT_LIST_ALL_FAIL:
-      return {
-        loading: false,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-};
-
 export const productListReducer = (state = { loading: true, products: [] }, action) => {
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
@@ -52,9 +33,7 @@ export const productListReducer = (state = { loading: true, products: [] }, acti
     case PRODUCT_LIST_SUCCESS:
       return {
         loading: false,
-        products: action.payload.products,
-        pages: action.payload.pages,
-        page: action.payload.page,
+        products: action.payload,
       };
     case PRODUCT_LIST_FAIL:
       return { loading: false, error: action.payload };

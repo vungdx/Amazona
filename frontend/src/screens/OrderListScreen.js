@@ -8,13 +8,15 @@ import MessageBox from "../components/MessageBox";
 OrderListScreen.propTypes = {};
 
 function OrderListScreen(props) {
+  const sellerMode = props.match.path.indexOf("/seller") >= 0;
   const dispatch = useDispatch();
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
   const orderList = useSelector((state) => state.orderList);
   const { loading, error, orders } = orderList;
-  console.log("vung orderList", orderList);
   useEffect(() => {
-    dispatch(listOrders());
-  }, [dispatch]);
+    dispatch(listOrders({ seller: sellerMode ? userInfo._id : "" }));
+  }, [dispatch, sellerMode, userInfo._id]);
   const deleteHandler = (order) => {};
   return (
     <div>

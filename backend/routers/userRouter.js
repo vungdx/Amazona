@@ -35,6 +35,7 @@ userRouter.post(
           name: user.name,
           email: user.email,
           isAdmin: user.isAdmin,
+          isSeller: user.isSeller,
           token: generateToken(user),
         });
         return;
@@ -48,13 +49,13 @@ userRouter.post(
   "/register",
   expressAsyncHandler(async (req, res) => {
     const user = new User({ name: req.body.name, email: req.body.email, password: bcrypt.hashSync(req.body.password, 8) });
-    console.log("user create", user);
     const createdUsers = await user.save();
     res.send({
       _id: createdUsers.id,
       name: createdUsers.name,
       email: createdUsers.email,
       isAdmin: createdUsers.isAdmin,
+      isSeller: user.isSeller,
       token: generateToken(createdUsers),
     });
   })
@@ -80,6 +81,11 @@ userRouter.put(
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
+      if (user.isSeller) {
+        user.seller.name = req.body.sellerName || user.seller.name;
+        user.seller.logo = req.body.logo || user.seller.logo;
+        user.seller.description = req.body.description || user.seller.description;
+      }
       if (req.body.password) {
         user.password = bcrypt.hashSync(req.body.password, 8);
       }
@@ -89,6 +95,7 @@ userRouter.put(
         name: updatedUser.name,
         email: updatedUser.email,
         isAdmin: updatedUser.isAdmin,
+        isSeller: user.isSeller,
         token: generateToken(updatedUser),
       });
     }
@@ -136,7 +143,6 @@ userRouter.put(
       user.isSeller = Boolean(req.body.isSeller);
       user.isAdmin = Boolean(req.body.isAdmin);
       const updatedUser = await user.save();
-      console.log("updatedUser", updatedUser);
       res.send({ message: "User Updated", user: updatedUser });
     } else {
       res.status(404).send({ message: "User Not Found" });

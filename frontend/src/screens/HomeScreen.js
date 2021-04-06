@@ -3,7 +3,7 @@ import Product from "./../components/Product";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { useDispatch, useSelector } from "react-redux";
-import { listAllProducts } from "../actions/productActions";
+import { listProducts } from "../actions/productActions";
 
 HomeScreen.propTypes = {};
 
@@ -13,7 +13,7 @@ function HomeScreen(props) {
   const { loading, error, products } = productListAll;
 
   useEffect(() => {
-    dispatch(listAllProducts());
+    dispatch(listProducts({}));
   }, [dispatch]);
 
   return (

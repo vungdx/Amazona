@@ -2,29 +2,20 @@ import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import data from "../data.js";
 import Product from "../models/productModel.js";
-import { isAdmin, isAuth } from "../utils.js";
+import { isAdmin, isAuth, isSellerOrAdmin } from "../utils.js";
 
 const productRouter = express.Router();
 
 productRouter.get(
-  "/all",
+  "/",
   expressAsyncHandler(async (req, res) => {
-    const products = await Product.find({});
+    const seller = req.query.seller || "";
+    const sellerFilter = seller ? { seller } : {};
+    const products = await Product.find({ ...sellerFilter });
     res.send(products);
   })
 );
-productRouter.get(
-  "/",
-  expressAsyncHandler(async (req, res) => {
-    const pageSize = 10;
-    const page = Number(req.query.pageNumber) || 1;
-    const count = await Product.countDocuments({});
-    const products = await Product.find({})
-      .skip(pageSize * (page - 1))
-      .limit(pageSize);
-    res.send({ products, page, pages: Math.ceil(count / pageSize) });
-  })
-);
+
 productRouter.get(
   "/seed",
   expressAsyncHandler(async (req, res) => {
@@ -33,7 +24,7 @@ productRouter.get(
     res.send({ createdProducts });
   })
 );
-// Xem chi tiết sản phẩm
+
 productRouter.get(
   "/:id",
   expressAsyncHandler(async (req, res) => {
@@ -49,10 +40,11 @@ productRouter.get(
 productRouter.post(
   "/",
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = new Product({
       name: "same name" + Date.now(),
+      seller: req.user._id,
       image: "/images/p1.jpg",
       price: 0,
       brand: "same brand",
@@ -85,7 +77,7 @@ productRouter.delete(
 productRouter.put(
   "/:id",
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const productId = req.params.id;
     const product = await Product.findById(productId);

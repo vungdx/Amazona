@@ -9,9 +9,6 @@ import {
   PRODUCT_DETAILS_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
-  PRODUCT_LIST_ALL_FAIL,
-  PRODUCT_LIST_ALL_REQUEST,
-  PRODUCT_LIST_ALL_SUCCESS,
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
@@ -23,26 +20,12 @@ import {
   PRODUCT_UPDATE_SUCCESS,
 } from "../constants/productConstants";
 
-// Không phân trang tại trang chủ => nên update bằng loadmore
-export const listAllProducts = () => async (dispatch) => {
-  dispatch({
-    type: PRODUCT_LIST_ALL_REQUEST,
-  });
-  try {
-    const { data } = await axios.get("/api/products/all");
-    dispatch({ type: PRODUCT_LIST_ALL_SUCCESS, payload: data });
-  } catch (error) {
-    dispatch({ type: PRODUCT_LIST_ALL_FAIL, payload: error.message });
-  }
-};
-
-// Phân trang tại product management
-export const listProducts = () => async (dispatch) => {
+export const listProducts = ({ seller = "" }) => async (dispatch) => {
   dispatch({
     type: PRODUCT_LIST_REQUEST,
   });
   try {
-    const { data } = await axios.get(`/api/products`);
+    const { data } = await axios.get(`/api/products/?seller=${seller}`);
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });
