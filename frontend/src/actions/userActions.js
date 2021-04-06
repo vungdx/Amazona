@@ -111,7 +111,6 @@ export const updateUser = (user) => async (dispatch, getState) => {
     const { data } = await axios.put(`/api/users/${user._id}`, user, {
       headers: { Authorization: `Bearer ${userInfo.token}` },
     });
-    console.log("data", data);
     dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
   } catch (error) {
     const message = error.response && error.response.data.message ? error.response.data.message : error.message;

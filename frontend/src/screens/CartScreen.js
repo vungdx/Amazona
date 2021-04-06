@@ -10,6 +10,7 @@ function CartScreen(props) {
   const dispatch = useDispatch();
   const productId = props.match.params.id;
   const cart = useSelector((state) => state.cart);
+  console.log("cart có trong", cart);
   const { cartItems } = cart;
   const qty = props.location.search ? Number(props.location.search.split("=")[1]) : 1;
   useEffect(() => {
@@ -68,7 +69,7 @@ function CartScreen(props) {
           <ul>
             <li>
               <h2>
-                Subtotal: ({cartItems.reduce((a, c) => a + c.qty, 0)} items): ${cartItems.reduce((a, c) => a + c.price + c.qty, 0)}
+                Subtotal ({cartItems.reduce((a, c) => a + c.qty, 0)} items) : ${cartItems.reduce((a, c) => a + c.price * c.qty, 0)}
               </h2>
             </li>
             <li>
