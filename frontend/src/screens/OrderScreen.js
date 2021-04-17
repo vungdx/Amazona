@@ -10,6 +10,7 @@ export default function OrderScreen(props) {
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
+
   const dispatch = useDispatch();
 
   useEffect(() => {

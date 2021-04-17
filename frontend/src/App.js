@@ -3,6 +3,7 @@ import { BrowserRouter, Link, Route } from "react-router-dom";
 import { signout } from "./actions/userActions";
 import AdminRoute from "./components/AdminRoute";
 import PrivateRoute from "./components/PrivateRoute";
+import SearchBox from "./components/SearchBox";
 import SellerRoute from "./components/SellerRoute";
 import CartScreen from "./screens/CartScreen";
 import HomeScreen from "./screens/HomeScreen";
@@ -15,6 +16,7 @@ import ProductListScreen from "./screens/ProductListScreen";
 import ProductScreen from "./screens/ProductScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import SearchScreen from "./screens/SearchScreen";
 import ShippingAddressScreen from "./screens/ShippingAddressScreen";
 import SigninScreen from "./screens/SigninScreen";
 import UserEditScreen from "./screens/UserEditScreen";
@@ -36,6 +38,9 @@ function App() {
             <Link className="brand" to="/">
               amazona
             </Link>
+          </div>
+          <div>
+            <Route render={({ history }) => <SearchBox history={history}></SearchBox>}></Route>
           </div>
           <div>
             <Link to="/cart">
@@ -109,6 +114,7 @@ function App() {
           <Route path="/payment" component={PaymentMethodScreen}></Route>
           <Route path="/placeorder" component={PlaceOrderScreen}></Route>
           <Route path="/order/:id" component={OrderScreen}></Route>
+          <Route path="/search/name/:name?" component={SearchScreen} exact></Route>
           <PrivateRoute path="/profile" component={ProfileScreen}></PrivateRoute>
           <AdminRoute path="/productlist" component={ProductListScreen} exact></AdminRoute>
           <AdminRoute path="/orderlist" component={OrderListScreen} exact></AdminRoute>

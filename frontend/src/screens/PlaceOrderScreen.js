@@ -9,6 +9,7 @@ import MessageBox from "../components/MessageBox";
 
 export default function PlaceOrderScreen(props) {
   const cart = useSelector((state) => state.cart);
+  console.log("Cart trong placeOrderScreen là", cart);
   if (!cart.paymentMethod) {
     props.history.push("/payment");
   }
