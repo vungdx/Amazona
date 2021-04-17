@@ -12,6 +12,9 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_REVIEW_CREATE_FAIL,
+  PRODUCT_REVIEW_CREATE_REQUEST,
+  PRODUCT_REVIEW_CREATE_SUCCESS,
   PRODUCT_SAVE_FAIL,
   PRODUCT_SAVE_REQUEST,
   PRODUCT_SAVE_SUCCESS,
@@ -20,12 +23,12 @@ import {
   PRODUCT_UPDATE_SUCCESS,
 } from "../constants/productConstants";
 
-export const listProducts = ({ seller = "", name = "" }) => async (dispatch) => {
+export const listProducts = ({ pageNumber = "", seller = "", name = "" }) => async (dispatch) => {
   dispatch({
     type: PRODUCT_LIST_REQUEST,
   });
   try {
-    const { data } = await axios.get(`/api/products/?seller=${seller}&name=${name}`);
+    const { data } = await axios.get(`/api/products/?pageNumber=${pageNumber}&seller=${seller}&name=${name}`);
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });
@@ -124,5 +127,25 @@ export const updateProduct = (product) => async (dispatch, getState) => {
   } catch (error) {
     const message = error.response && error.response.data.message ? error.response.data.message : error.message;
     dispatch({ type: PRODUCT_UPDATE_FAIL, error: message });
+  }
+};
+
+export const createReview = (productId, review) => async (dispatch, getState) => {
+  console.log("gửi action createReview");
+  dispatch({ type: PRODUCT_REVIEW_CREATE_REQUEST });
+  const {
+    userSignin: { userInfo },
+  } = getState();
+  try {
+    const { data } = await axios.post(`/api/products/${productId}/reviews`, review, {
+      headers: { Authorization: `Bearer ${userInfo.token}` },
+    });
+    dispatch({
+      type: PRODUCT_REVIEW_CREATE_SUCCESS,
+      payload: data.review,
+    });
+  } catch (error) {
+    const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+    dispatch({ type: PRODUCT_REVIEW_CREATE_FAIL, payload: message });
   }
 };
