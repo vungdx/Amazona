@@ -11,6 +11,7 @@ function CartScreen(props) {
   const productId = props.match.params.id;
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+  console.log("cartItems phải có dạng như này", cartItems);
   const qty = props.location.search ? Number(props.location.search.split("=")[1]) : 1;
   useEffect(() => {
     if (productId) {
