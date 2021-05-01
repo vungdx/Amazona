@@ -3,6 +3,7 @@ import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_PAYMENT_METHOD, CART_SAVE_SH
 
 export const addToCart = (productId, qty) => async (dispatch, getState) => {
   const { data } = await axios.get(`/api/products/${productId}`);
+  // Data trả về dữ liệu của productDetail mà user addToCart
   dispatch({
     type: CART_ADD_ITEM,
     payload: {
@@ -15,6 +16,7 @@ export const addToCart = (productId, qty) => async (dispatch, getState) => {
       qty,
     },
   });
+  console.log("JSON", JSON.stringify(getState().cart.cartItems));
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 

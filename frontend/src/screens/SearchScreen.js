@@ -12,7 +12,6 @@ SearchScreen.propTypes = {};
 
 function SearchScreen(props) {
   const { name = "all", pageNumber = 1 } = useParams();
-  console.log("thằng name ở đây là", name);
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const { loading, error, products, page, pages } = productList;

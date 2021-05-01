@@ -9,21 +9,25 @@ CartScreen.propTypes = {};
 function CartScreen(props) {
   const dispatch = useDispatch();
   const productId = props.match.params.id;
+  const qty = props.location.search ? Number(props.location.search.split("=")[1]) : 1;
+
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
-  console.log("cartItems phải có dạng như này", cartItems);
-  const qty = props.location.search ? Number(props.location.search.split("=")[1]) : 1;
+
   useEffect(() => {
     if (productId) {
       dispatch(addToCart(productId, qty));
     }
   }, [dispatch, productId, qty]);
+
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
   };
+
   const checkoutHandler = () => {
     props.history.push("/signin?redirect=shipping");
   };
+
   return (
     <div className="row top">
       <div className="col-2">
