@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Link, Route } from "react-router-dom";
 import { signout } from "./actions/userActions";
 import AdminRoute from "./components/AdminRoute";
+import ChatBox from "./components/ChatBox";
 import PrivateRoute from "./components/PrivateRoute";
 import SearchBox from "./components/SearchBox";
 import SellerRoute from "./components/SellerRoute";
@@ -19,6 +20,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import SearchScreen from "./screens/SearchScreen";
 import ShippingAddressScreen from "./screens/ShippingAddressScreen";
 import SigninScreen from "./screens/SigninScreen";
+import SupportScreen from "./screens/SupportScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import UserListScreen from "./screens/UserListScreen";
 function App() {
@@ -100,6 +102,9 @@ function App() {
                   <li>
                     <Link to="/userlist">Users</Link>
                   </li>
+                  <li>
+                    <Link to="/support">Support</Link>
+                  </li>
                 </ul>
               </div>
             )}
@@ -119,6 +124,7 @@ function App() {
           <AdminRoute path="/productlist" component={ProductListScreen} exact></AdminRoute>
           <AdminRoute path="/productlist/pageNumber/:pageNumber" component={ProductListScreen} exact></AdminRoute>
           <AdminRoute path="/orderlist" component={OrderListScreen} exact></AdminRoute>
+          <AdminRoute path="/support" component={SupportScreen} exact></AdminRoute>
           <AdminRoute path="/userlist" component={UserListScreen}></AdminRoute>
           <AdminRoute path="/user/:id/edit" component={UserEditScreen}></AdminRoute>
           <SellerRoute path="/productlist/seller" component={ProductListScreen}></SellerRoute>
@@ -126,7 +132,10 @@ function App() {
           <Route path="/product/:id/edit" component={ProductEditScreen}></Route>
           <Route path="/" exact component={HomeScreen}></Route>
         </main>
-        <footer className="row center">All right reserved</footer>
+        <footer className="row center">
+          {userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo}></ChatBox>}
+          <div>All right reserved</div>
+        </footer>
       </div>
     </BrowserRouter>
   );

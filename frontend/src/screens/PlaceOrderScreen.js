@@ -9,13 +9,12 @@ import MessageBox from "../components/MessageBox";
 
 export default function PlaceOrderScreen(props) {
   const cart = useSelector((state) => state.cart);
-  console.log("Cart trong placeOrderScreen là", cart);
   if (!cart.paymentMethod) {
     props.history.push("/payment");
   }
   const orderCreate = useSelector((state) => state.orderCreate);
   const { loading, success, error, order } = orderCreate;
-  const toPrice = (num) => Number(num.toFixed(2)); //5.1233 => "5.12" => 5.12
+  const toPrice = (num) => Number(num.toFixed(2));
   cart.itemsPrice = toPrice(cart.cartItems.reduce((a, c) => a + c.qty * c.price, 0));
   cart.shippingPrice = cart.itemsPrice > 100 ? toPrice(0) : toPrice(10);
   cart.taxPrice = toPrice(0.15 * cart.itemsPrice);
@@ -112,9 +111,7 @@ export default function PlaceOrderScreen(props) {
                   <div>
                     <strong>Order total</strong>
                   </div>
-                  <div>
-                    <strong>${cart.totalPrice.toFixed(2)}</strong>
-                  </div>
+                  <div>{/* <strong>${cart.totalPrice.toFixed(2)}</strong> */}</div>
                 </div>
               </li>
               <li>
