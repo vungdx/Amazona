@@ -19,10 +19,11 @@ function ProductListScreen(props) {
   const { loading, error, products, page, pages } = productList;
   const productCreate = useSelector((state) => state.productCreate);
   const { loading: loadingCreate, error: errorCreate, success: successCreate, product: createdProduct } = productCreate;
-  const userSignin = useSelector((state) => state.userSignin);
 
   const productDelete = useSelector((state) => state.productDelete);
   const { loading: loadingDelete, error: errorDelete, success: successDelete } = productDelete;
+
+  const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
   useEffect(() => {
     if (successCreate) {
@@ -32,7 +33,7 @@ function ProductListScreen(props) {
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
-    dispatch(listProducts({ seller: sellerMode ? userInfo._id : "", pageNumber }));
+    dispatch(listProducts({ pageNumber, seller: sellerMode ? userInfo._id : "" }));
   }, [createdProduct, successDelete, dispatch, props.history, successCreate, sellerMode, userInfo._id, pageNumber]);
 
   const deleteHandler = (product) => {

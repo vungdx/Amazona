@@ -49,6 +49,7 @@ function App() {
               Cart
               {cartItems.length > 0 && <span className="badge">{cartItems.length}</span>}
             </Link>
+
             {userInfo && userInfo.isSeller && (
               <div className="dropdown">
                 <Link to="#admin">

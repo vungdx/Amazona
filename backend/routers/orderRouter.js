@@ -3,6 +3,7 @@ import expressAsyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
 import { isAdmin, isAuth, isSellerOrAdmin } from "../utils.js";
 const orderRouter = express.Router();
+
 orderRouter.get(
   "/",
   isAuth,
@@ -14,6 +15,7 @@ orderRouter.get(
     res.send(orders);
   })
 );
+
 orderRouter.post(
   "/",
   isAuth,

@@ -10,12 +10,13 @@ productRouter.get(
   "/",
   expressAsyncHandler(async (req, res) => {
     const pageSize = 10;
+    const seller = req.query.seller || "";
+    const sellerFilter = seller ? { seller } : {};
+
     const page = Number(req.query.pageNumber) || 1;
     const name = req.query.name || "";
     const nameFilter = name ? { name: { $regex: name, $options: "i" } } : {};
-    const seller = req.query.seller || "";
-    const sellerFilter = seller ? { seller } : {};
-    const count = await Product.count({});
+    const count = await Product.countDocuments({});
     const products = await Product.find({ ...sellerFilter, ...nameFilter })
       .populate("seller", "seller.name seller.logo")
       .skip(pageSize * (page - 1))
