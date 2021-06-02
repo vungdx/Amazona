@@ -16,6 +16,9 @@ import {
   USER_SIGNIN_REQUEST,
   USER_SIGNIN_SUCCESS,
   USER_SIGNOUT,
+  USER_TOPSELLERS_LIST_FAIL,
+  USER_TOPSELLERS_LIST_REQUEST,
+  USER_TOPSELLERS_LIST_SUCCESS,
   USER_UPDATE_FAIL,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
@@ -69,6 +72,7 @@ export const signout = () => (dispatch) => {
 };
 
 export const detailsUser = (userId) => async (dispatch, getState) => {
+  console.log("truyền lên userId", userId);
   dispatch({ type: USER_DETAILS_REQUEST, payload: userId });
   const {
     userSignin: { userInfo },
@@ -149,5 +153,16 @@ export const deleteUser = (userId) => async (dispatch, getState) => {
   } catch (error) {
     const message = error.response && error.response.data.message ? error.response.data.message : error.message;
     dispatch({ type: USER_DELETE_FAIL, payload: message });
+  }
+};
+
+export const listTopSellers = () => async (dispatch) => {
+  dispatch({ type: USER_TOPSELLERS_LIST_REQUEST });
+  try {
+    const { data } = await axios.get("/api/users/top-sellers");
+    dispatch({ type: USER_TOPSELLERS_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+    dispatch({ type: USER_TOPSELLERS_LIST_FAIL, payload: message });
   }
 };

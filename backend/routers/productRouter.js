@@ -21,6 +21,7 @@ productRouter.get(
       .populate("seller", "seller.name seller.logo")
       .skip(pageSize * (page - 1))
       .limit(pageSize);
+    console.log("products ở đây này", products);
     res.send({ products, page, pages: Math.ceil(count / pageSize) });
   })
 );

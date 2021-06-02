@@ -489,3 +489,10 @@ tbody > tr:nth-child(odd) {
 .support-users .unread {
   background-color: #f02020;
 }
+
+
+/* Carousel */
+.carousel .slide img {
+  max-width: 30rem;
+}
+
