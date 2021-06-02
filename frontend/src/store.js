@@ -3,7 +3,7 @@ import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import { productListReducer, productDetailsReducer, productCreateReducer, productUpdateReducer, productDeteleReducer, productReviewCreateReducer } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducers";
 import { userDeleteReducer, userDetailsReducer, userListReducer, userRegisterReducer, userSigninReducer, userUpdateProfileReducer, userUpdateReducer, userTopSellerListReducer } from "./reducers/userReducers";
-import { orderCreateReducer, orderDetailsReducer, orderListReducer } from "./reducers/orderReducers";
+import { orderCreateReducer, orderDetailsReducer, orderListReducer, orderPayReducer } from "./reducers/orderReducers";
 const initialState = {
   cart: {
     cartItems: localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [],
@@ -22,6 +22,7 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
+  orderPay: orderPayReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   userUpdate: userUpdateReducer,
