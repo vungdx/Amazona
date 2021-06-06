@@ -72,7 +72,6 @@ export const signout = () => (dispatch) => {
 };
 
 export const detailsUser = (userId) => async (dispatch, getState) => {
-  console.log("truyền lên userId", userId);
   dispatch({ type: USER_DETAILS_REQUEST, payload: userId });
   const {
     userSignin: { userInfo },

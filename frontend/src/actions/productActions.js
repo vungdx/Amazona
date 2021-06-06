@@ -61,7 +61,6 @@ export const saveProduct = (product) => async (dispatch, getState) => {
       });
       dispatch({ type: PRODUCT_SAVE_SUCCESS, payload: data });
     } else {
-      // Trường hợp edit
       const { data } = await axios.put("/api/products/" + product._id, product, {
         headers: {
           Authorization: "Bearer " + userInfo.token,

@@ -22,6 +22,7 @@ function ProductScreen(props) {
   const { loading: loadingReviewCreate, error: errorReviewCreate, success: successReviewCreate } = productReviewCreate;
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+
   useEffect(() => {
     if (successReviewCreate) {
       window.alert("Review Submitted Successfully");
